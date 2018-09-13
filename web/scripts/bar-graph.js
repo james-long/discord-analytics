@@ -1,3 +1,4 @@
+// Initially called function to start the bar graph creation
 function d3create_bargraph(config, server_id) {
     $.ajax({
         type: 'POST',
@@ -15,6 +16,7 @@ function d3create_bargraph(config, server_id) {
         });
 }
 
+// Reset everything when a new server is selected
 function d3drop_bargraph(){
     d3.select('.bar-graph').selectAll('*').remove();
 }

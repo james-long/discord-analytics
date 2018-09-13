@@ -1,3 +1,4 @@
+// Initially called function to start the line graph creation
 function d3create_linegraph(config, server_id){
     $.ajax({
         type: 'POST',
@@ -15,6 +16,7 @@ function d3create_linegraph(config, server_id){
         });
 }
 
+// Reset everything when a new server is selected
 function d3drop_linegraph(){
     d3.select('.line-graph').selectAll('*').remove();
     d3.select('.line-legend-container').selectAll('*').remove();
@@ -34,13 +36,6 @@ function d3render_linegraph(dataSet, config, server_id){
     // Filter for a server
     dataSet = dataSet.filter((d) => {return d.server_id === server_id});
 
-    // Set up tooltip object to show/hide
-    /*let tooltip = d3.select('body')
-        .append('div')
-        .attr('class', 'tooltip')
-        .attr('z-index', 10)
-        .style('visibility', 'hidden');*/
-
     // Various arrays containing unique entries (domains) of params of the dataset
     let uniqueDates = dataSet.reduce((acc, cur) => {
         if(!acc.includes(cur.date)){
@@ -54,7 +49,6 @@ function d3render_linegraph(dataSet, config, server_id){
         }
         return acc;
     }, []);
-
 
     // Split the data set into one array per date
     let dateSplit = uniqueDates.map((date) => {
@@ -140,7 +134,7 @@ function d3render_linegraph(dataSet, config, server_id){
         .attr("stroke", (d, i) => {return colorScheme(i);})
         .attr("stroke-width", 1)
         .attr('data-user', (d) => {return d;})
-        .attr('d', (userID) => {
+        .attr('d', () => {
                 return d3.line()
                     .x((d) => {
                         return xScale(d.date);
@@ -165,7 +159,7 @@ function d3render_linegraph(dataSet, config, server_id){
         });
     };
 
-    /*  axes */
+    /* Axes */
     // y-axis
     let yAxis = svg
         .append('g')

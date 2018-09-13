@@ -83,4 +83,4 @@ expressClient.get('/config/', async (req, res) => {   // Config query handler
     res.send(JSON.stringify(data));
 });
 
-expressClient.listen(3000, () => console.log('Example app listening on port 3000!'));
+expressClient.listen(3000, () => console.log('Express app listening on port 3000!'));
