@@ -1,0 +1,15 @@
+{
+  "discord":
+  {
+    "token": "BOT TOKEN HERE"
+  },
+
+  "postgres":
+  {
+    "user": "postgres",
+    "host": "localhost",
+    "database": "discord_analytics",
+    "password": "PASSWORD HERE",
+    "port": 5432
+  }
+}
