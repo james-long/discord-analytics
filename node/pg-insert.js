@@ -66,7 +66,7 @@ exports.pgInsert = async (pgClient, serverID, tableName, toInsert) => {
     for(data of toInsert) {
         // Create array of values based on sorted keys
         params = Object.keys(data).sort().map(col => {
-            return data[col];
+            return typeof(data[col]) === 'string' ? data[col].replace(/\0/g, '') : data[col];
         });
         let query = `INSERT INTO ${tableName}(${colNames}) VALUES(${colParams});`;
 

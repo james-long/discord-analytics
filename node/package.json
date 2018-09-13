@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.4.2",
+    "express": "^4.16.3",
     "pg": "^7.4.3",
     "require-sql": "^1.0.0"
   }

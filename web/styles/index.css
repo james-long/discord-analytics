@@ -1,0 +1,58 @@
+.server-selector{
+    margin: 10px 0 10px 0;
+    padding: 10px 10px 10px 10px;
+    background-color: #C7D9D9;
+    width: 25%
+}
+.server-heading{
+    font-family: Helvetica, Arial, sans-serif;
+}
+.server-dropdown{
+    margin-top: 10px;
+    padding: 5px 5px 5px 5px;
+    width: 100%;
+}
+
+.legend-text{
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.line-graph-option-selector{
+    margin: 10px 0 10px 0;
+    padding: 10px 10px 10px 10px;
+    background-color: #C7D9D9;
+    width: 800px
+}
+.line-graph-option-heading{
+    font-family: Helvetica, Arial, sans-serif;
+}
+.line-graph-option-button-container{
+    margin-top: 10px;
+}
+.line-graph-option-button{
+    display:inline-block;
+}
+
+svg.bar-graph {
+    background-color: #C7D9D9;
+    padding: 10px 5px 150px 40px;
+}
+
+svg.line-graph {
+    background-color: #C7D9D9;
+    padding: 10px 5px 150px 40px;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 180px;
+    height: 40px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    white-space: pre-wrap;
+}

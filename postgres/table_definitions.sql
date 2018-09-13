@@ -27,7 +27,9 @@ CREATE	TABLE channels(
 
 DROP	TABLE IF EXISTS messages;
 CREATE	TABLE messages(
-	message_id TEXT NOT NULL PRIMARY KEY,
+	-- Getting a lot of PK violations... could it be that Discord.js message IDs are not actually unique?
+	-- Will leave like this for now, although message_id really should be a PK
+	message_id TEXT NOT NULL, --PRIMARY KEY,
 	server_id TEXT NOT NULL,
 	channel_id TEXT NOT NULL,
 	author_id TEXT NOT NULL,
