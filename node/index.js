@@ -7,6 +7,7 @@ const Express = require('express');
 const {getData_messages, getData_servers} = require('./pg-manager.js');
 const {jsonify_query} = require('./pg-jsonify-query.js');
 const {getQueryByAlias} = require('./query-dictionary.js');
+const Messenger = require('./messenger');
 
 const discordClient = new Discord.Client();
 const postgresClient = new Postgres.Client(postgresAuth);
@@ -35,8 +36,10 @@ discordClient.on("message", async (message) => {
         let server = message.channel.guild;
         let start_timestamp = new Date();
         try {
-            await getData_messages(server, postgresClient);
-            await getData_servers(server, postgresClient);
+            const progressEmbed = new Messenger.ProgressUpdate(message.channel);
+            await progressEmbed.sendInitialMessage();
+            await getData_messages(server, progressEmbed, postgresClient);
+            await getData_servers(server, progressEmbed, postgresClient);
         } catch(err){
             console.error(`Issue occurred somewhere in the data pull and insertion chain: ${err}`);
         }

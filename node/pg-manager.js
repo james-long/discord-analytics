@@ -9,8 +9,8 @@ const {pgInsert} = require('./pg-insert.js');
         message_reactions
         message_mentions
 */
-exports.getData_messages = async function(server, postgresClient){
-    let allMessages = await getAllMessageData(server);
+exports.getData_messages = async function(server, progressEmbed, postgresClient){
+    let allMessages = await getAllMessageData(server, progressEmbed);
 
     // messages
     let payload_messages = [];
@@ -132,7 +132,7 @@ exports.getData_messages = async function(server, postgresClient){
         users
         user_roles
 */
-exports.getData_servers = async function(server, postgresClient){
+exports.getData_servers = async function(server, progressEmbed, postgresClient){
     let {channels, members, roles} = server;
 
     // servers
