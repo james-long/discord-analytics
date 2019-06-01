@@ -19,7 +19,8 @@ function setup(postgresClient){
 
     // Routes
     expressClient.post('/', async (req, res) => {   // Generic query handler
-        let data = await jsonify_query(postgresClient, req.body.queryAlias, getQueryByAlias(req.body.queryAlias));
+        let data = await jsonify_query(postgresClient, req.body.queryAlias,
+            getQueryByAlias(req.body.queryAlias), req.body.params);
         res.send(data);
     });
     expressClient.get('/config/', async (req, res) => {   // Config query handler

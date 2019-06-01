@@ -9,7 +9,12 @@ SELECT	svr.server_id,
 		chan.name AS channel_name,
 		chan.type AS channel_type,
 		COUNT(DISTINCT msg.message_id) AS message_count
-FROM	users AS usr
+FROM (
+    SELECT *
+    FROM users
+    WHERE server_id = $1
+        AND user_id LIKE $2
+)   AS usr
 CROSS	JOIN LATERAL (
 	SELECT	*
 	FROM	channels AS chan
