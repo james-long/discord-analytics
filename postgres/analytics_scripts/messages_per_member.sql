@@ -12,14 +12,11 @@ SELECT	svr.server_id,
 FROM (
     SELECT *
     FROM users
-    WHERE server_id = $1
-        AND user_id LIKE $3
 )   AS usr
 CROSS	JOIN LATERAL (
 	SELECT	*
 	FROM	channels AS chan
 	WHERE	chan.server_id = usr.server_id
-	    AND chan.channel_id LIKE $2
 		AND	chan.type = 'text'
 )	AS chan
 LEFT	JOIN messages AS msg

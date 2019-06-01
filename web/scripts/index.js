@@ -13,9 +13,13 @@ $(document).ready(() => {
             const parsedConfig = JSON.parse(config);
 
             populateDropdowns(parsedConfig);
-            createGraphs(parsedConfig);
+            //createGraphs(parsedConfig);
 
-            $('.heading-filter-selector-dropdown').change(() => {createGraphs(parsedConfig);});
+            d3BarGraph = new BarGraph(parsedConfig);
+            $('.heading-filter-selector-dropdown').change(() => {
+                d3BarGraph.d3drop_bargraph();
+                d3BarGraph.d3render_bargraph();
+            });
         })
         .fail((xhr, status, err) => {
             console.log(err);
@@ -36,7 +40,7 @@ function populateDropdowns(config){
 
     const channels = JSON.parse(config.channels);
     const channelDropdown = $('#channel-dropdown');
-    channelDropdown.append($('<option></option>').text('[NO FILTER]').attr('data-channel-id', '%'));
+    channelDropdown.append($('<option></option>').text('[NO FILTER]'));
     channels
         .filter((channelObj) => channelObj.server_id === curServerID)
         .forEach((channelObj) => {
@@ -49,7 +53,7 @@ function populateDropdowns(config){
 
     const users = JSON.parse(config.users);
     const userDropdown = $('#user-dropdown');
-    userDropdown.append($('<option></option>').text('[NO FILTER]').attr('data-user-id', '%'));
+    userDropdown.append($('<option></option>').text('[NO FILTER]'));
     users
         .filter((userObj) => userObj.server_id === curServerID)
         .forEach((userObj) => {
@@ -63,7 +67,5 @@ function populateDropdowns(config){
 
 function createGraphs(config){
     d3drop_linegraph();
-    d3drop_bargraph();
     d3create_linegraph(config);
-    d3create_bargraph(config);
 }
