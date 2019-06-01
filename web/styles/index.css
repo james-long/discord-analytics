@@ -1,31 +1,31 @@
-.server-selector{
+.heading-filter-selector-block{
     margin: 10px 0 10px 0;
     padding: 10px 10px 10px 10px;
     background-color: #C7D9D9;
-    width: 25%
+    display: inline-block;
 }
-.server-heading{
+.heading-filter-selector-text{
     font-family: Helvetica, Arial, sans-serif;
 }
-.server-dropdown{
+.heading-filter-selector-dropdown{
     margin-top: 10px;
     padding: 5px 5px 5px 5px;
     width: 100%;
 }
 
+.heading-filter-selector-block-wide{
+    width: 50%;
+}
+
+.heading-filter-selector-block-33{
+    width: 25%;
+}
+
+
 .legend-text{
     font-family: Helvetica, Arial, sans-serif;
 }
 
-.line-graph-option-selector{
-    margin: 10px 0 10px 0;
-    padding: 10px 10px 10px 10px;
-    background-color: #C7D9D9;
-    width: 800px
-}
-.line-graph-option-heading{
-    font-family: Helvetica, Arial, sans-serif;
-}
 .line-graph-option-button-container{
     margin-top: 10px;
 }

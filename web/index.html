@@ -3,18 +3,30 @@
         <title>Discord Visualizations</title>
         <link rel="stylesheet" href="styles/index.css">
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://d3js.org/d3.v5.min.js"></script>
     </head>
     <body>
-        <div class="server-selector">
-            <h class="server-heading">Server</h>
+        <div class="heading-filter-selector-block heading-filter-selector-block-33">
+            <h class="heading-filter-selector-text">Server</h>
             <br/>
-            <select class="server-dropdown"></select>
+            <select id="server-dropdown" class="heading-filter-selector-dropdown"></select>
         </div>
-        <svg class="bar-graph" width="1100" height="500"></svg>
-        <div class="line-graph-option-selector">
-            <h class="line-graph-option-heading">Graph Metric</h>
+        <div class="heading-filter-selector-block heading-filter-selector-block-33">
+            <h class="heading-filter-selector-text">Channel</h>
+            <br/>
+            <select id="channel-dropdown" class="heading-filter-selector-dropdown"></select>
+        </div>
+        <div class="heading-filter-selector-block heading-filter-selector-block-33">
+            <h class="heading-filter-selector-text">User</h>
+            <br/>
+            <select id="user-dropdown" class="heading-filter-selector-dropdown"></select>
+        </div>
+        <svg class="bar-graph" width="950" height="500"></svg>
+
+        <div class="heading-filter-selector-block heading-filter-selector-block-wide">
+            <h class="heading-filter-selector-text">Graph Metric</h>
             <br/>
             <div class="line-graph-option-button-container">
                 <button type="button" class="line-graph-option-button" id="agg">Show Aggregated Messages</button>
@@ -25,11 +37,12 @@
             <div style="overflow-y:scroll;overflow-x:hidden;width:250px;height:560px;margin:0 10px 0 0;background-color: #C7D9D9;">
                 <svg class="line-legend-container"></svg>
             </div>
-            <div style="overflow-x:scroll;overflow-y:hidden;height:560px;width:885px;">
+            <div style="overflow-x:scroll;overflow-y:hidden;height:560px;width:600px;">
                 <svg class="line-graph" width="6000" height="450"></svg>
             </div>
         </div>
         <!-- Function-defining scripts -->
+        <script src="scripts/helpers.js"></script>
         <script src="scripts/bar-graph.js"></script>
         <script src="scripts/line-graph.js"></script>
         <!-- Main execution script -->

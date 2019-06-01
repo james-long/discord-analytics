@@ -10,29 +10,54 @@ $(document).ready(() => {
         contentType: 'application/json'
     })
         .done((config) => {
-            // Store globally
-            config = JSON.parse(config);
-            var globalConfig = config;
+            const parsedConfig = JSON.parse(config);
+            populateDropdowns(parsedConfig);
 
-            // Populate dropdown
-            let dropdown = $('.server-dropdown');
-            let servers = JSON.parse(config.servers);
-            servers.forEach((serverObj) => {
-                dropdown.append(
-                    $('<option></option>')
-                        .text(serverObj.name)
-                        .attr('data-server', serverObj.server_id)
-                );
-            });
-            dropdown.change(() => {createGraphs(globalConfig);});
+            serverDropdown.change(() => {createGraphs(parsedConfig);});
 
-            // First-time graph creation
-            createGraphs(globalConfig);
+            createGraphs(parsedConfig);
         })
         .fail((xhr, status, err) => {
             $("p").text(err);
         });
 });
+
+function populateDropdowns(config){
+    const servers = JSON.parse(config.servers);
+    const serverDropdown = $('#server-dropdown');
+    servers.forEach((serverObj) => {
+        serverDropdown.append(
+            $('<option></option>')
+                .text(serverObj.name)
+                .attr('data-server-id', serverObj.server_id)
+        );
+    });
+    const curServerID = getSelectedServerID();
+
+    const channels = JSON.parse(config.channels);
+    const channelDropdown = $('#channel-dropdown');
+    channels
+        .filter((channelObj) => channelObj.server_id === curServerID)
+        .forEach((channelObj) => {
+        channelDropdown.append(
+            $('<option></option>')
+                .text(channelObj.name)
+                .attr('data-channel-id', channelObj.channel_id)
+        );
+    });
+
+    const users = JSON.parse(config.users);
+    const userDropdown = $('#user-dropdown');
+    users
+        .filter((userObj) => userObj.server_id === curServerID)
+        .forEach((userObj) => {
+            userDropdown.append(
+                $('<option></option>')
+                    .text(formatUsername(userObj.name, userObj.nickname, userObj.nickname_id))
+                    .attr('data-user-id', userObj.user_id)
+            );
+        });
+}
 
 function createGraphs(config){
     let dropdownSelection = $('.server-dropdown option:selected').attr('data-server');
