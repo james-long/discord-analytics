@@ -4,6 +4,7 @@ const HELPER_SELECTORS = {
     userDropdownSelected: '#user-dropdown option:selected',
 };
 
+// TODO add <none> option to channel and user
 function getSelectedServerID(){
     return $(HELPER_SELECTORS.serverDropdownSelected).attr('data-server-id');
 }

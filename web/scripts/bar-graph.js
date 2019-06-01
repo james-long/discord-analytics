@@ -1,18 +1,25 @@
 // Initially called function to start the bar graph creation
-function d3create_bargraph(config, server_id) {
+function d3create_bargraph(config) {
+    const selected = {
+        server: getSelectedServerID(),
+        channel: getSelectedChannelID(),
+        user: getSelectedUserID(),
+    };
+
     $.ajax({
         type: 'POST',
         url: 'http://localhost:3000/',
         data: JSON.stringify({
-            queryAlias: 'messages_per_member'
+            queryAlias: 'messages_per_member',
+            params: [selected.server, selected.channel, selected.user],
         }),
         contentType: 'application/json'
     })
         .done((data) => {
-            d3render_bargraph(JSON.parse(data), config, server_id);
+            d3render_bargraph(JSON.parse(data), config);
         })
         .fail((xhr, status, err) => {
-            $("p").text(err);
+            console.log(err);
         });
 }
 
@@ -22,7 +29,7 @@ function d3drop_bargraph(){
 }
 
 // obj is an array of data objects
-function d3render_bargraph(dataSet, config, server_id){
+function d3render_bargraph(dataSet, config){
     // We are only concerned with the users and channels for now, we change it to a map on ID
     userConfig = JSON.parse(config.users)
         .reduce((acc, cur) => {
@@ -32,9 +39,6 @@ function d3render_bargraph(dataSet, config, server_id){
         .reduce((acc, cur) => {
             return acc.set(cur.channel_id, `#${cur.name}`);
         }, new Map());
-
-    // Filter for a server
-    dataSet = dataSet.filter((d) => {return d.server_id === server_id});
 
     // Set up tooltip object to show/hide
     let tooltip = d3.select('body')

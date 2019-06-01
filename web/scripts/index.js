@@ -11,14 +11,14 @@ $(document).ready(() => {
     })
         .done((config) => {
             const parsedConfig = JSON.parse(config);
+
             populateDropdowns(parsedConfig);
-
-            serverDropdown.change(() => {createGraphs(parsedConfig);});
-
             createGraphs(parsedConfig);
+
+            $('.heading-filter-selector-dropdown').change(() => {createGraphs(parsedConfig);});
         })
         .fail((xhr, status, err) => {
-            $("p").text(err);
+            console.log(err);
         });
 });
 
@@ -36,6 +36,7 @@ function populateDropdowns(config){
 
     const channels = JSON.parse(config.channels);
     const channelDropdown = $('#channel-dropdown');
+    channelDropdown.append($('<option></option>').text('[NO FILTER]').attr('data-channel-id', '%'));
     channels
         .filter((channelObj) => channelObj.server_id === curServerID)
         .forEach((channelObj) => {
@@ -48,6 +49,7 @@ function populateDropdowns(config){
 
     const users = JSON.parse(config.users);
     const userDropdown = $('#user-dropdown');
+    userDropdown.append($('<option></option>').text('[NO FILTER]').attr('data-user-id', '%'));
     users
         .filter((userObj) => userObj.server_id === curServerID)
         .forEach((userObj) => {
@@ -60,9 +62,8 @@ function populateDropdowns(config){
 }
 
 function createGraphs(config){
-    let dropdownSelection = $('.server-dropdown option:selected').attr('data-server');
     d3drop_linegraph();
     d3drop_bargraph();
-    d3create_linegraph(config, dropdownSelection);
-    d3create_bargraph(config, dropdownSelection);
+    d3create_linegraph(config);
+    d3create_bargraph(config);
 }
