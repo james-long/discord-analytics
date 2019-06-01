@@ -1,5 +1,5 @@
 require('require-sql');
-const configQuery = require('./../postgres/get_table_columns.sql');
+const configQuery = require('../../postgres/get_table_columns.sql');
 
 /*  pg-insert.js
     Contains flexible pgInsert function to insert to public schema tables.

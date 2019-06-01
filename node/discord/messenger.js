@@ -1,12 +1,16 @@
 const Discord = require('discord.js');
 
+/**
+ * Discord chat interface to output updates to a given channel on message fetching status
+ */
+
 class ProgressUpdate{
     constructor(channel){
         this.messageChannel = channel;
         this.currentlyFetchingChannel = '';
+        // fetchProgress holds objects {channelID, channelName, numFetched},
+        // fetchProgressKeys maps channelIDs to their index in fetchProgress
         this.fetchProgress = [];
-        // Not sure how much overhead doing an existence check in an array will reasonably cause,
-        // so we just leave the lookup to an object
         this.fetchProgressKeys = {};
     }
     async sendInitialMessage(){

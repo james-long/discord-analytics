@@ -1,6 +1,6 @@
 // Pull in everything we need to channel through
 
-const {getAllMessageData} = require('./discord-pull.js');
+const {getAllMessageData} = require('../discord/discord-pull.js');
 const {pgInsert} = require('./pg-insert.js');
 
 /*  Data pertinent to messages: fills the tables:
