@@ -1,5 +1,6 @@
 class BarGraph{
     constructor(config){
+        Object.keys(config).forEach((k) => config[k] = JSON.parse(config[k]));
         this.config = config;
         this.data = [];
         this.d3create_bargraph();
@@ -23,11 +24,91 @@ class BarGraph{
             });
     }
     d3drop_bargraph(){
-        d3.select('.bar-graph').selectAll('*').remove();
+        // d3.select('.bar-graph').selectAll('*').remove();
+    }
+
+    d3render_bargraph(){
+        const selected = {
+            serverID: getSelectedServerID(),
+            channelID: getSelectedChannelID(),
+            userID: getSelectedUserID(),
+        };
+
+        const dataSet = this.data.filter((obj) => {
+            return obj.server_id === selected.serverID
+                && (!selected.channelID || obj.channel_id === selected.channelID)
+                && (!selected.userID || obj.user_id === selected.userID);
+        });
+
+        const allUsers = this.config.users.filter((obj) =>
+            obj.server_id === selected.serverID
+            && (!selected.userID || obj.user_id === selected.userID));
+        const allUsersMap = new Map();
+        const userAxisNames = ['x'];
+        let allUsersIter = 1;
+        for(const user of allUsers){
+            userAxisNames[allUsersIter] = formatUsername(user.name, user.nickname, user.nickname_id);
+            if(!allUsersMap.has(user.user_id)){
+                allUsersMap[user.user_id] = allUsersIter;
+                allUsersIter++;
+            }
+        }
+        const totalUsers = allUsersIter - 1;
+
+        const allChannels = this.config.channels.filter((obj) =>
+            obj.server_id === selected.serverID
+            && (!selected.channelID || obj.channel_id === selected.channelID));
+        const channelIdToName = {};
+        const allChannelsMap = new Map();
+        let allChannelsIter = 0;
+        for(const channel of allChannels){
+            channelIdToName[channel.channel_id] = channel.name;
+            if(!allChannelsMap.has(channel.channel_id)){
+                allChannelsMap[channel.channel_id] = allChannelsIter;
+                allChannelsIter++;
+            }
+        }
+
+        const c3data = [];
+        Object.entries(allChannelsMap).forEach(([key, val]) => c3data[val] = [key]);
+        for(const data of dataSet){
+            c3data[allChannelsMap[data.channel_id]][allUsersMap[data.user_id]] = parseInt(data.message_count);
+        }
+        for(const entry of c3data){
+            for(let i = 0; i <= totalUsers; i++){
+                if(!entry[i]){
+                    entry[i] = 0;
+                }
+            }
+        }
+        c3data.unshift(userAxisNames);
+
+        c3.generate({
+            bindto: '#bar-graph',
+            data: {
+                x: 'x',
+                columns: c3data,
+                type: 'bar',
+                groups: [
+                    Object.keys(allChannelsMap)
+                ],
+                names: channelIdToName,
+            },
+            grid: {
+                y: {
+                    lines: [{value:0}]
+                }
+            },
+            axis : {
+                x : {
+                    type : 'category',
+                },
+            }
+        });
     }
 
     // obj is an array of data objects
-    d3render_bargraph(){
+    old_d3render_bargraph(){
         const selected = {
             server_id: getSelectedServerID(),
             channel_id: getSelectedChannelID(),
