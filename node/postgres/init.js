@@ -1,15 +1,11 @@
-const Postgres = require('pg');
+const { Client } = require('pg');
 
-function authenticate(postgresAuth){
-    const postgresClient = new Postgres.Client(postgresAuth);
-
-    try{
-        postgresClient.connect();
-    } catch(err){
-        console.error(`Postgres connection failed: ${err}`);
-    }
-
+const setupPostgres = async (postgresAuth) => {
+    console.log("Connecting to Postgres client...");
+    const postgresClient = new Client(postgresAuth);
+    await postgresClient.connect();
+    console.log("Postgres client connected!");
     return postgresClient;
-}
+};
 
-module.exports = { authenticate };
+module.exports = { setupPostgres };

@@ -3,7 +3,7 @@ const expressClient = Express();
 const {jsonify_query} = require('../postgres/pg-jsonify-query.js');
 const {getQueryByAlias} = require('../postgres/query-dictionary.js');
 
-function setup(postgresClient){
+const setupExpress = (postgresClient) => {
     // Middleware
     // allow CORS (in development, both the site and server use different localhost ports)
     expressClient.use((req, res, next) => {
@@ -33,7 +33,7 @@ function setup(postgresClient){
         res.send(JSON.stringify(data));
     });
 
-    expressClient.listen(3000, () => console.log('Express app listening on port 3000!'));
-}
+    expressClient.listen(4000, () => console.log('Express app listening on port 4000!'));
+};
 
-module.exports = { setup };
+module.exports = { setupExpress };

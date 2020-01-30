@@ -1,0 +1,16 @@
+.dropdown {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown .label {
+    margin-bottom: 5px;
+}
+
+.dropdown .select {
+    padding: 5px;
+}
+
+.dropdown .select .option {
+    padding: 5px;
+}

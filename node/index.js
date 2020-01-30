@@ -1,13 +1,24 @@
 const {
     discord: discordAuth,
-    postgres: postgresAuth
+    postgres: postgresAuth,
 } = require('./auth.json');
 
-postgresInit = require('./postgres/init');
-postgresClient = postgresInit.authenticate(postgresAuth);
+const { setupPostgres } = require('./postgres/init');
+const { setupDiscord } = require('./discord/init');
+const { setupExpress } = require('./express/init');
 
-discordInit = require('./discord/init');
-discordInit.setup(discordAuth, postgresClient);
+const setup = async () => {
+    console.log("======= Postgres Setup");
+    const postgresClient = await setupPostgres(postgresAuth);
+    console.log();
+    console.log("======= Discord Setup");
+    await setupDiscord(discordAuth, postgresClient);
+    console.log();
+    console.log("======= Express Setup");
+    setupExpress(postgresClient);
+    console.log();
+};
 
-expressInit = require('./express/init');
-expressInit.setup(postgresClient);
+setup().catch((err) => {
+    console.log(`Error occurred during setup. ${err}`);
+});

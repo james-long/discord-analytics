@@ -1,29 +1,30 @@
-const Discord = require('discord.js');
-const Messenger = require('./messenger');
-const discordClient = new Discord.Client();
-const {getData_messages, getData_servers} = require('../postgres/pg-manager.js');
+const { Client: DiscordClient } = require('discord.js');
+const { DataPullProgressUpdater } = require('./messenger');
+const {
+    getData_messages,
+    getData_servers
+} = require('../postgres/pg-manager.js');
 
-function setup(discordAuth, postgresClient){
-    try{
-        discordClient.login(discordAuth.token);
-    } catch(err){
-        console.error(`Discord connection failed: ${err}`);
-    }
+const discordClient = new DiscordClient();
 
-    createEvents(postgresClient);
-}
+const setupDiscord = async (discordAuth, postgresClient) => {
+    console.log("Logging into Discord...");
+    createBotTriggers(postgresClient);
+    await discordClient.login(discordAuth.token);
+    console.log("Discord login success!");
+};
 
-function createEvents(postgresClient){
+const createBotTriggers = (postgresClient) => {
     discordClient.on("ready", () => {
-        console.log("Analytics Bot is now online!");
+        console.log("Analytics Bot is now online! (use !pull in any channel)");
     });
 
     discordClient.on("message", async (message) => {
-        if (message.content.startsWith("!pull")) {
-            let server = message.channel.guild;
-            let start_timestamp = new Date();
+        if (message.content === "!pull") {
+            const server = message.channel.guild;
+            const start_timestamp = new Date();
             try {
-                const progressEmbed = new Messenger.ProgressUpdate(message.channel);
+                const progressEmbed = new DataPullProgressUpdater(message.channel);
                 await progressEmbed.sendInitialMessage();
                 await getData_messages(server, progressEmbed, postgresClient);
                 await getData_servers(server, progressEmbed, postgresClient);
@@ -42,6 +43,6 @@ function createEvents(postgresClient){
             console.log(`Total time taken: ${(end_timestamp - start_timestamp)/1000.0} seconds.`);
         }
     });
-}
+};
 
-module.exports = { setup };
+module.exports = { setupDiscord };

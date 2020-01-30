@@ -1,10 +1,10 @@
 //  Batch retrieve all messages from a given channel
 getAllChannelMessages = async (channel, progressEmbed) => {
     const batchSize = 100; // Discord won't give us any more
-    const updateInterval = 10;
-    let earliestMessageID;
+    const updateInterval = 10; // Edit progress update message every N batches
+    let earliestMessageID = null;
     let allMessages = new Map();
-    progressEmbed.currentlyFetchingChannel = channel.name;
+    progressEmbed.setCurrentlyFetchingChannel(channel.name);
     await progressEmbed.updateProgress(channel.id, channel.name, allMessages.size);
     try {
         let moreMessagesExist = (await channel.fetchMessages({'limit': 1})).size;
@@ -27,11 +27,11 @@ getAllChannelMessages = async (channel, progressEmbed) => {
 
 // Iterate through all channels and pull logs from each
 exports.getAllMessageData = async (server, progressEmbed) => {
-    let channelMap = server.channels;
-    let allMessages = new Map();
-    for(let channel of channelMap.values()){
+    const channelMap = server.channels;
+    const allMessages = new Map();
+    for(const channel of channelMap.values()){
         if(channel.type === 'text'){ // Filter out non-relevant channels
-            channelMessages = await getAllChannelMessages(channel, progressEmbed);
+            const channelMessages = await getAllChannelMessages(channel, progressEmbed);
             allMessages.set(channel.id, channelMessages);
         }
     }
